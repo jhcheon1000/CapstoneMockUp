@@ -55,6 +55,9 @@ public class SideBarView extends RelativeLayout implements View.OnClickListener 
                 Toast.makeText(getContext(), "New Device Button Clicked", Toast.LENGTH_SHORT).show();
                 sideListener.onRegisterNewDevice();
                 break;
+            case R.id.btn_new_device:
+                sideListener.onRegisterNewDevice();
+                break;
             case R.id.side_level_layout2:
                 Toast.makeText(getContext(), "Device List Button Clicked", Toast.LENGTH_LONG).show();
                 sideListener.onShowDeviceList();

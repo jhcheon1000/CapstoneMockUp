@@ -13,6 +13,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -70,7 +71,14 @@ public class AvailableDeviceActivity extends AppCompatActivity {
         detectedAdapter = new ArrayAdapter<String>(AvailableDeviceActivity.this, android.R.layout.simple_list_item_single_choice);
         listViewDetected.setAdapter(detectedAdapter);
         listItemClicked = new ListItemClicked();
-        detectedAdapter.notifyDataSetChanged();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                detectedAdapter.notifyDataSetChanged();
+                listViewDetected.invalidate();
+            }
+        });
+
         listViewPaired.setAdapter(adapter);
 
 
@@ -79,25 +87,37 @@ public class AvailableDeviceActivity extends AppCompatActivity {
     protected void onStart() {
         // TODO Auto-generated method stub
         super.onStart();
-        getPairedDevices();
+
         listViewDetected.setOnItemClickListener(listItemClicked);
         listViewPaired.setOnItemClickListener(listItemClickedonPaired);
 
         onBluetooth();
+        arrayListBluetoothDevices.clear();
+        getPairedDevices();
         startSearching();
     }
 
     private void getPairedDevices() {
+        Log.i("sibal", "getPairedDevices() start");
         Set<BluetoothDevice> pairedDevice = bluetoothAdapter.getBondedDevices();
+        Log.i("sibal", "getPairedDevices() size " + String.valueOf(pairedDevice.size()));
         if(pairedDevice.size()>0)
         {
             for(BluetoothDevice device : pairedDevice)
             {
                 arrayListpaired.add(device.getName()+"\n"+device.getAddress());
+                Log.i("sibal", "paired device " + device.getName());
                 arrayListPairedBluetoothDevices.add(device);
             }
         }
-        adapter.notifyDataSetChanged();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapter.notifyDataSetChanged();
+                listViewPaired.invalidate();
+            }
+        });
+
     }
 
     class ListItemClicked implements AdapterView.OnItemClickListener
@@ -122,7 +142,14 @@ public class AvailableDeviceActivity extends AppCompatActivity {
                     //arrayListpaired.add(bdDevice.getName()+"\n"+bdDevice.getAddress());
                     //adapter.notifyDataSetChanged();
                     getPairedDevices();
-                    adapter.notifyDataSetChanged();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyDataSetChanged();
+                            listViewPaired.invalidate();
+                        }
+                    });
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -140,7 +167,14 @@ public class AvailableDeviceActivity extends AppCompatActivity {
                 if(removeBonding)
                 {
                     arrayListpaired.remove(position);
-                    adapter.notifyDataSetChanged();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyDataSetChanged();
+                            listViewPaired.invalidate();
+                        }
+                    });
+
                 }
 
 
@@ -215,7 +249,7 @@ public class AvailableDeviceActivity extends AppCompatActivity {
             if (arrayListBluetoothDevices.isEmpty()) Log.d("Empty", "empty empty");
             Message msg = Message.obtain();
             String action = intent.getAction();
-            Log.d("FOUND BLUETOOTH","search search");
+
             if(BluetoothDevice.ACTION_FOUND.equals(action)){
                 Toast.makeText(context, "ACTION_FOUND", Toast.LENGTH_SHORT).show();
 
@@ -234,8 +268,16 @@ public class AvailableDeviceActivity extends AppCompatActivity {
                 if(arrayListBluetoothDevices.size()<1) // this checks if the size of bluetooth device is 0,then add the
                 {                                           // device to the arraylist.
                     detectedAdapter.add(device.getName()+"\n"+device.getAddress());
+                    Log.i("sibal","detected device " + device.getName());
                     arrayListBluetoothDevices.add(device);
-                    detectedAdapter.notifyDataSetChanged();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            detectedAdapter.notifyDataSetChanged();
+                            listViewDetected.invalidate();
+                        }
+                    });
+
                 }
                 else
                 {
@@ -251,7 +293,13 @@ public class AvailableDeviceActivity extends AppCompatActivity {
                     {
                         detectedAdapter.add(device.getName()+"\n"+device.getAddress());
                         arrayListBluetoothDevices.add(device);
-                        detectedAdapter.notifyDataSetChanged();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                detectedAdapter.notifyDataSetChanged();
+                                listViewDetected.invalidate();
+                            }
+                        });
                     }
                 }
             }
@@ -291,5 +339,56 @@ public class AvailableDeviceActivity extends AppCompatActivity {
                     break;
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Log.i("sibal", "onResume start");
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                detectedAdapter.notifyDataSetChanged();
+//                adapter.notifyDataSetChanged();
+//            }
+//        });
+
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        Log.i("sibal", "onPause start");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        Log.i("sibal", "onStop start");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        offBluetooth();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            onBackPressed();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

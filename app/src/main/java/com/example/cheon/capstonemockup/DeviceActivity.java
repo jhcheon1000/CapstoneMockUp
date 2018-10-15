@@ -25,7 +25,7 @@ public class DeviceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_status);
 
-        deviceList = (ListView)findViewById(R.id.device_list);
+        deviceList = (ListView)findViewById(R.id.doorlock_enter);
 
 
 

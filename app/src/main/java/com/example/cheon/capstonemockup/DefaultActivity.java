@@ -125,6 +125,8 @@ public class DefaultActivity extends AppCompatActivity {
 
         addSideView();
 
+        requestPermission();
+
 
     }
 
@@ -260,5 +262,7 @@ public class DefaultActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
+
+
 
 }
