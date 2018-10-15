@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:gravity="center_horizontal"
+    tools:context="com.example.cheon.capstonemockup.DefaultActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/id_default_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/power_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/power_button_outline_large"
+            android:layout_centerInParent="true"
+            app:layout_anchorGravity="center"
+            app:backgroundTint="#fff"
+            app:fabSize="normal" />
+
+    </RelativeLayout>
+
+
+
+
+    <FrameLayout
+        android:id="@+id/fl_slide"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.75"
+            android:background="#202735"/>
+
+        <FrameLayout
+            android:id="@+id/view_sildebar"
+            android:layout_width="280dp"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
+
+
+
+
+
+
+
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/power_button"-->
+        <!--android:layout_width="61dp"-->
+        <!--android:layout_height="61dp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_marginRight="0dp"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:visibility="invisible"-->
+        <!--android:clipChildren="false"-->
+        <!--android:clipToPadding="false"-->
+        <!--android:src="@drawable/power_button_outline"-->
+        <!--app:backgroundTint="#0b0b0b"-->
+
+        <!--app:borderWidth="0dp"-->
+        <!--app:fabSize="normal"-->
+        <!--app:elevation="0dp"-->
+        <!--app:pressedTranslationZ="0dp"/>-->
+
+    <!--app:rippleColor="@color/transparent"-->
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+
+        <!--<ImageView-->
+            <!--android:id="@+id/power_button"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="200dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:src="@drawable/power_button_outline"-->
+            <!--android:contentDescription="@string/StringValue"/>-->
+
+
+    <!--</LinearLayout>-->
+
+</FrameLayout>

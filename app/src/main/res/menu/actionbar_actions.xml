@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_setting"
+        android:icon="@drawable/ic_settings_black_48dp"
+        android:title="Setting"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/setting_index_1"
+        android:title="1"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/setting_index_2"
+        android:title="2"
+        app:showAsAction="never"/>
+
+</menu>
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+    <!--<menu xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto">-->
+    <!--&lt;!&ndash; "Mark Favorite", should appear as action button if possible &ndash;&gt;-->
+    <!--<item-->
+    <!--android:id="@+id/action_settings"-->
+    <!--android:title="환경설정"-->
+    <!--android:icon="@drawable/ic_settings_black_48dp"-->
+    <!--app:showAsAction="ifRoom"/>-->
+
+    <!--&lt;!&ndash; Settings, should always be in the overflow &ndash;&gt;-->
+    <!--<item android:id="@+id/action_settings2"-->
+    <!--android:title="항목1"-->
+    <!--app:showAsAction="never"/>-->
+
+    <!--<item android:id="@+id/action_settings3"-->
+    <!--android:title="항목2"-->
+    <!--app:showAsAction="never"/>-->
+
+    <!--</menu>-->

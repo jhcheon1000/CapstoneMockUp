@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    tools:context="com.example.cheon.capstonemockup.SerialActivity">
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="30dp"
+        android:text="제품 번호"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/doorlock_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Input"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="40dp"/>
+
+    <!--<ImageButton-->
+        <!--android:id="@+id/btn_side_level_1"-->
+        <!--android:layout_width="50dp"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_marginTop="50dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:background="@drawable/next"/>-->
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_serial_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/next_right_arrow"
+        android:layout_centerInParent="true"
+        app:layout_anchorGravity="center"
+        app:borderWidth="0dp"
+        app:backgroundTint="#fff"
+        app:maxImageSize="60dp"
+        app:fabCustomSize="55dp" />
+
+</LinearLayout>
