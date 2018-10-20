@@ -59,8 +59,13 @@ public class AvailableDeviceActivity extends AppCompatActivity {
     BluetoothAdapter bluetoothAdapter = null;
 
 
+    ConnectedTask mConnectedTask = null;
 
-//==================================================================================================
+    Boolean isConnectionError = null;
+
+
+
+    //==================================================================================================
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +104,7 @@ public class AvailableDeviceActivity extends AppCompatActivity {
 
         listViewDetected.setOnItemClickListener(listItemClicked);
         listViewPaired.setOnItemClickListener(listItemClickedonPaired);
-
+        isConnectionError = false;
 
     }
 
@@ -119,6 +124,11 @@ public class AvailableDeviceActivity extends AppCompatActivity {
 
         adapter.notifyDataSetChanged();
 
+    }
+
+    public void connected(BluetoothSocket soc, BluetoothDevice device) {
+        mConnectedTask = new ConnectedTask(soc, device);
+        mConnectedTask.execute();
     }
 
     private class PairedTask extends AsyncTask<Void, Void, Void> {
@@ -172,6 +182,7 @@ public class AvailableDeviceActivity extends AppCompatActivity {
         }
     }
 
+
     private class ConnectTask extends AsyncTask<Void, Void, Boolean> {
         private BluetoothSocket mBluetoothSocket = null;
         private BluetoothDevice mBluetoothDevice = null;
@@ -216,10 +227,13 @@ public class AvailableDeviceActivity extends AppCompatActivity {
             super.onPostExecute(isConnectSuccess);
 
             if (isConnectSuccess) {
-
+                connected(mBluetoothSocket, mBluetoothDevice);
             }
             else {
                 //연결 실패 오류 처리
+                isConnectionError = true;
+                Log.d(TAG, "Unable to connect device");
+                Toast.makeText(getApplicationContext(), "Unable to connect device", Toast.LENGTH_SHORT);
             }
         }
     }
@@ -250,6 +264,7 @@ public class AvailableDeviceActivity extends AppCompatActivity {
 
             while (true) {
 //                while문 탈출 조건 추가하기
+                if (isCancelled()) return false;
 
                 try {
                     int bytesAvailable = mInputStream.available();
@@ -269,7 +284,6 @@ public class AvailableDeviceActivity extends AppCompatActivity {
                                 readBufferPosition = 0;
 
                                 Log.d(TAG, "recv message: " + recvMessage);
-                                publishProgress(recvMessage);
                             }
                             else {
                                 readBuffer[readBufferPosition++] = b;
@@ -282,6 +296,44 @@ public class AvailableDeviceActivity extends AppCompatActivity {
                 }
             }
 
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+
+            if (!aBoolean) {
+                closeSocket();
+                Log.i(TAG, "Device connection was lost");
+                isConnectionError = true;
+            }
+        }
+
+        @Override
+        protected void onCancelled(Boolean aBoolean) {
+            super.onCancelled(aBoolean);
+
+            closeSocket();
+        }
+
+        void closeSocket() {
+            try {
+                mBluetoothSocket.close();
+                Log.i(TAG, "close socket");
+            } catch (IOException e) {
+                Log.e(TAG, "unable to close() ", e);
+            }
+        }
+
+        void write(String msg) {
+            msg += "\n";
+
+            try {
+                mOutputStream.write(msg.getBytes());
+                mOutputStream.flush();
+            } catch (IOException e) {
+                Log.e(TAG, "Exception during send", e );
+            }
         }
     }
 
@@ -310,29 +362,21 @@ public class AvailableDeviceActivity extends AppCompatActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
             bdDevice = arrayListPairedBluetoothDevices.get(position);
 
-//            if (bdDevice == null) return;
-//
 //            try {
-//                bdSocket = bdDevice.createRfcommSocketToServiceRecord(uuidSPP);
-//            } catch (IOException e) {
+//                Boolean removeBonding = removeBond(bdDevice);
+//                if(removeBonding)
+//                {
+//                    arrayListpaired.remove(position);
+//                    adapter.notifyDataSetChanged();
+//                }
+//
+//                Log.i("Log", "Removed"+removeBonding);
+//            } catch (Exception e) {
+//                // TODO Auto-generated catch block
 //                e.printStackTrace();
 //            }
-//
-//            bluetoothAdapter.cancelDiscovery();
-
-            try {
-                Boolean removeBonding = removeBond(bdDevice);
-                if(removeBonding)
-                {
-                    arrayListpaired.remove(position);
-                    adapter.notifyDataSetChanged();
-                }
-
-                Log.i("Log", "Removed"+removeBonding);
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            ConnectTask mConnectTask = new ConnectTask(bdDevice);
+            mConnectTask.execute();
         }
     }
 
