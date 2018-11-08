@@ -19,6 +19,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -63,6 +64,7 @@ public class AvailableDeviceActivity extends AppCompatActivity {
 
     Boolean isConnectionError = null;
 
+    Button btnSend;
 
 
     //==================================================================================================
@@ -93,6 +95,16 @@ public class AvailableDeviceActivity extends AppCompatActivity {
         detectedAdapter.notifyDataSetChanged();
         listViewPaired.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+
+        btnSend = findViewById(R.id.btn_send);
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mConnectedTask != null) {
+                    mConnectedTask.write("123");
+                }
+            }
+        });
 
 
     }
@@ -264,7 +276,10 @@ public class AvailableDeviceActivity extends AppCompatActivity {
 
             while (true) {
 //                while문 탈출 조건 추가하기
-                if (isCancelled()) return false;
+                if (isCancelled()) {
+                    Log.i(TAG, "isCancelled()");
+                    return false;
+                }
 
                 try {
                     int bytesAvailable = mInputStream.available();
@@ -564,6 +579,7 @@ public class AvailableDeviceActivity extends AppCompatActivity {
         Log.i("sibal", "onDestroy start");
         offBluetooth();
         unregisterReceiver(myReceiver);
+        mConnectedTask = null;
     }
 
     @Override

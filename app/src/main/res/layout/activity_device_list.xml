@@ -3,6 +3,12 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <Button
+        android:id="@+id/btn_send"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="send"/>
+
     <ListView
         android:id="@+id/listViewPaired"
         android:layout_width="match_parent"
@@ -17,7 +23,5 @@
 
     </ListView>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+
 </LinearLayout>
